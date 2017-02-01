@@ -1,6 +1,6 @@
 name: Gravitee.io APIM
 description: Gravitee.io - Open Source API Management Solution
-version: lastest
+version: latest
 category: API Management
 licence : Apache Licence, version 2
 maintainer: sebastien.renno@leansys.fr
