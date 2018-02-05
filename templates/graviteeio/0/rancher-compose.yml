@@ -1,30 +1,33 @@
-.catalog:
+version: '2'
+catalog:
   name: Gravitee.io
-  version: Lastest
-  description: Gravitee.io API Management
-  uuid: graviteeio-0
+  version: 1.0.0-rancher1
+  description: |
+    Gravitee.io API Management.
+  maintainer: "Nicolas Geraud <nicolas.geraud@graviteesource.com>"
+  uuid: graviteeio-apim-0
   questions:
-    - variable: "docker_version"
+    - variable: "gravitee_version"
       description: "Gravitee.io version"
-      label: "Gravitee.io version"
+      label: "Gravitee.io APIM version"
       required: true
       default: "latest"
       type: "string"   
     - variable: "gateway_port"
-      description: "Public gateway port"
+      description: "Gateway port"
       label: "Public gateway port"
       required: true
-      default: "8000"
+      default: "8002"
       type: "int"
-    - variable: "ui_port"
-      description: "Public Management UI port"
-      label: "Public Management UI port"
+    - variable: "management_ui_port"
+      description: "The Gravitee.io APIM Management UI port."
+      label: "Management UI port"
       required: true
-      default: "8002"      
+      default: "8000"
       type: "int" 
-    - variable: "management_port"
-      description: "Public Management API port"
-      label: "Public Management API port"
+    - variable: "management_api_port"
+      description: "Management API port"
+      label: "Management API port"
       required: true
       default: "8001"      
       type: "int"              
@@ -34,36 +37,62 @@
       required: true
       default: ""
       type: "string"
+    - variable: "mongodb_link"
+      description: |
+        Choose the MongoDB service to use.
+      label: "MongoDB stack/service"
+      default: ""
+      required: true
+      type: "service"
+    - variable: "es_link"
+      description: |
+        Choose the Elasticsearch service to use.
+        WARNING: versions > 5 are not supported.
+      label: "Elasticsearch stack/service"
+      default: ""
+      required: true
+      type: "service"
 
-gateway:
-  scale: 1
-  health_check:
-    port: 8082
-    interval: 2000
-    initializing_timeout: 60000
-    unhealthy_threshold: 3
-    strategy: recreate
-    healthy_threshold: 2
-    response_timeout: 2000
-    
-management-api:
-  scale: 1
+services:
+  gateway:
+    scale: 1
+    health_check:
+      port: 18082
+      interval: 2000
+      initializing_timeout: 60000
+      unhealthy_threshold: 3
+      strategy: recreate
+      healthy_threshold: 2
+      response_timeout: 2000
 
-management-ui:
-  scale: 1
+  management-api:
+    scale: 1
+    health_check:
+      port: 18083
+      interval: 2000
+      initializing_timeout: 60000
+      unhealthy_threshold: 3
+      strategy: recreate
+      healthy_threshold: 2
+      response_timeout: 2000
 
-mongodb:
-  scale: 1
+  management-ui:
+    scale: 1
+    health_check:
+      port: 8000
+      interval: 2000
+      initializing_timeout: 60000
+      unhealthy_threshold: 3
+      strategy: recreate
+      healthy_threshold: 2
+      response_timeout: 2000
 
-elasticsearch:
-  scale: 1
-
-loadbalancer:
-  load_balancer_config:
-    haproxy_config: {}
-  health_check:
-    port: 42
-    interval: 2000
-    unhealthy_threshold: 3
-    healthy_threshold: 2
-    response_timeout: 2000
+  loadbalancer:
+    load_balancer_config:
+      haproxy_config: {}
+    health_check:
+      port: 42
+      interval: 2000
+      unhealthy_threshold: 3
+      healthy_threshold: 2
+      response_timeout: 2000
