@@ -8,7 +8,9 @@ catalog:
   uuid: graviteeio-apim-0
   questions:
     - variable: "gravitee_version"
-      description: "Gravitee.io version"
+      description: |
+        allowed values : latest, 1.12.5, 1.13.0, ... .
+        See https://hub.docker.com/r/graviteeio/gateway/tags/ to have the full list of tags."
       label: "Gravitee.io APIM version"
       required: true
       default: "latest"
@@ -31,20 +33,20 @@ catalog:
       required: true
       default: "8001"      
       type: "int"              
-    - variable: "management_host"
+    - variable: "management_api_host"
       description: "Public Management API Hostname or IP (Your rancher host node)"
       label: "Public Management API Host"
       required: true
-      default: ""
+      default: "localhost"
       type: "string"
-    - variable: "mongodb_link"
+    - variable: "mongodb_service"
       description: |
         Choose the MongoDB service to use.
       label: "MongoDB stack/service"
       default: ""
       required: true
       type: "service"
-    - variable: "es_link"
+    - variable: "es_service"
       description: |
         Choose the Elasticsearch service to use.
         WARNING: versions > 5 are not supported.

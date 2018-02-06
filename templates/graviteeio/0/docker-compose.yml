@@ -12,52 +12,50 @@
 #-------------------------------------------------------------------------------
 
 gateway:
-  image: graviteeio/gateway:${docker_version}
+  image: graviteeio/gateway:${gravitee_version}
   hostname: gateway
-  links:
-    - mongodb
-    - elasticsearch
+  external_links:
+    - mongodb_service:mongodb
+    - es_service:elasticsearch
   environment:
-    - GRAVITEEIO_MONGODB_HOST=mongodb
-    - GRAVITEEIO_MONGODB_PORT=27017
-    - GRAVITEEIO_ELASTIC_HOST=elasticsearch
-    - GRAVITEEIO_ELASTIC_PORT=9300
+    - gravitee.management.mongodb.dbname=gravitee
+    - gravitee.management.mongodb.host=mongodb
+    - gravitee.management.mongodb.port=27017
+    - gravitee.analytics.elasticsearch.endpoints=http://elasticsearch:9200
   labels:
     io.rancher.container.pull_image: always
     
 management-api:
-  image: graviteeio/management-api:${docker_version}
+  image: graviteeio/management-api:${gravitee_version}
   hostname: management-api
-  links:
-    - mongodb
-    - elasticsearch
+  external_links:
+    - mongodb_service:mongodb
+    - es_service:elasticsearch
   environment:
-    - GRAVITEEIO_MONGODB_HOST=mongodb
-    - GRAVITEEIO_MONGODB_PORT=27017
-    - GRAVITEEIO_ELASTIC_HOST=elasticsearch
-    - GRAVITEEIO_ELASTIC_PORT=9300
+    - gravitee.management.mongodb.dbname=gravitee
+    - gravitee.management.mongodb.host=mongodb
+    - gravitee.management.mongodb.port=27017
+    - gravitee.analytics.elasticsearch.endpoints=http://elasticsearch:9200
   labels:
     io.rancher.container.pull_image: always
 
 management-ui:
   hostname: management-ui
-  image: graviteeio/management-ui:${docker_version}
-  links:
-    - management-api
+  image: graviteeio/management-ui:${gravitee_version}
   environment:
-    - MGMT_API_URL=http://${management_host}:${management_port}/management/
+    - MGMT_API_URL=http://${management_api_host}:${management_api_port}/management/
   labels:
     io.rancher.container.pull_image: always
 
 loadbalancer:
   ports:
-  - ${management_port}:8083
-  - ${ui_port}:80
+  - ${management_api_port}:8083
+  - ${management_ui_port}:80
   - ${gateway_port}:8082
   labels:
     io.rancher.scheduler.global: 'true'
-    io.rancher.loadbalancer.target.management-api: ${management_port}=8083
-    io.rancher.loadbalancer.target.management-ui: ${ui_port}=80
+    io.rancher.loadbalancer.target.management-api: ${management_api_port}=8083
+    io.rancher.loadbalancer.target.management-ui: ${management_ui_port}=80
     io.rancher.loadbalancer.target.gateway: ${gateway_port}=8082
   tty: true
   image: rancher/load-balancer-service
