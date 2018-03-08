@@ -21,6 +21,7 @@ gateway:
     - gravitee_management_mongodb_dbname=gravitee
     - gravitee_management_mongodb_host=mongodb
     - gravitee_management_mongodb_port=27017
+    - gravitee_ratelimit_mongodb_uri=mongodb://mongodb/gravitee
     - gravitee_reporters_elasticsearch_endpoints=http://elasticsearch:9200
   labels:
     io.rancher.container.pull_image: always
