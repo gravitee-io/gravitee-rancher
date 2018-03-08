@@ -53,7 +53,7 @@ catalog:
       description: |
         Choose the MongoDB service to use.
       label: "MongoDB stack/service"
-      default: ""
+      default: "MongoDB/mongo-cluster"
       required: true
       type: "service"
 
@@ -62,7 +62,7 @@ catalog:
         Choose the Elasticsearch service to use.
         WARNING: versions > 5 are not supported.
       label: "Elasticsearch stack/service"
-      default: ""
+      default: "elasticsearch/elasticsearch-masters"
       required: true
       type: "service"
 
