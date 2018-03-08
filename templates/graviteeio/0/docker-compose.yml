@@ -15,13 +15,13 @@ gateway:
   image: graviteeio/gateway:${gravitee_version}
   hostname: gateway
   external_links:
-    - mongodb_service:mongodb
-    - es_service:elasticsearch
+    - ${mongodb_service}:mongodb
+    - ${es_service}:elasticsearch
   environment:
     - gravitee_management_mongodb_dbname=gravitee
     - gravitee_management_mongodb_host=mongodb
     - gravitee_management_mongodb_port=27017
-    - gravitee_analytics_elasticsearch_endpoints=${es_service}
+    - gravitee_analytics_elasticsearch_endpoints=http://elasticsearch:9200
   labels:
     io.rancher.container.pull_image: always
     
@@ -29,13 +29,13 @@ management-api:
   image: graviteeio/management-api:${gravitee_version}
   hostname: management-api
   external_links:
-    - mongodb_service:mongodb
-    - es_service:elasticsearch
+    - ${mongodb_service}:mongodb
+    - ${es_service}:elasticsearch
   environment:
     - gravitee_management_mongodb_dbname=gravitee
     - gravitee_management_mongodb_host=mongodb
     - gravitee_management_mongodb_port=27017
-    - gravitee_analytics_elasticsearch_endpoints=${es_service}
+    - gravitee_analytics_elasticsearch_endpoints=http://elasticsearch:9200
   labels:
     io.rancher.container.pull_image: always
 
