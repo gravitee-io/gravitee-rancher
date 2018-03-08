@@ -18,10 +18,10 @@ gateway:
     - mongodb_service:mongodb
     - es_service:elasticsearch
   environment:
-    - gravitee.management.mongodb.dbname=gravitee
-    - gravitee.management.mongodb.host=mongodb
-    - gravitee.management.mongodb.port=27017
-    - gravitee.analytics.elasticsearch.endpoints=http://elasticsearch:9200
+    - gravitee_management_mongodb_dbname=gravitee
+    - gravitee_management_mongodb_host=mongodb
+    - gravitee_management_mongodb_port=27017
+    - gravitee_analytics_elasticsearch_endpoints=${es_service}
   labels:
     io.rancher.container.pull_image: always
     
@@ -32,10 +32,10 @@ management-api:
     - mongodb_service:mongodb
     - es_service:elasticsearch
   environment:
-    - gravitee.management.mongodb.dbname=gravitee
-    - gravitee.management.mongodb.host=mongodb
-    - gravitee.management.mongodb.port=27017
-    - gravitee.analytics.elasticsearch.endpoints=http://elasticsearch:9200
+    - gravitee_management_mongodb_dbname=gravitee
+    - gravitee_management_mongodb_host=mongodb
+    - gravitee_management_mongodb_port=27017
+    - gravitee_analytics_elasticsearch_endpoints=${es_service}
   labels:
     io.rancher.container.pull_image: always
 
